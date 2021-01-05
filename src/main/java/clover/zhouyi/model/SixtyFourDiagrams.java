@@ -2,6 +2,8 @@ package clover.zhouyi.model;
 
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+
 
 /**
  * 64卦
@@ -9,7 +11,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum SixtyFourDiagrams {
     //乾一（金
-    TIAN(0b111111, EightDiagrams.QIAN, EightDiagrams.QIAN, "天", "☰☰", "乾为天"),
+    QIAN(0b111111, EightDiagrams.QIAN, EightDiagrams.QIAN, "乾", "☰☰", "乾为天"),
     GOU(0b111110, EightDiagrams.QIAN, EightDiagrams.XUN,  "姤", "☰☴", "天风姤"),//一爻变
     DUN(0b111100, EightDiagrams.QIAN, EightDiagrams.GEN, "遁", "☰☶", "天山遁"),//二爻变
     PI(0b111000, EightDiagrams.QIAN, EightDiagrams.KUN, "否", "☰☷", "天地否"),//三爻变
@@ -25,7 +27,7 @@ public enum SixtyFourDiagrams {
     CUI(0b011000, EightDiagrams.DUI, EightDiagrams.KUN, "萃", "☱☷", "泽地萃"),
     XIAN(0b011100, EightDiagrams.DUI, EightDiagrams.GEN, "咸", "☱☶", "泽山咸"),
     JIAN(0b010100, EightDiagrams.KAN, EightDiagrams.GEN, "蹇", "☵☶", "水山蹇"),
-    QIAN(0b000100, EightDiagrams.KUN, EightDiagrams.GEN, "谦", "☷☶", "地山谦"),
+    QIAN1(0b000100, EightDiagrams.KUN, EightDiagrams.GEN, "谦", "☷☶", "地山谦"),
 
     XIAOGUO(0b001100, EightDiagrams.ZHEN, EightDiagrams.GEN, "小过", "☳☶", "雷山小过"),
     GUIMEI(0b001011, EightDiagrams.ZHEN, EightDiagrams.DUI, "归妹", "☳☱", "雷泽归妹"),
@@ -86,7 +88,7 @@ public enum SixtyFourDiagrams {
     JIAN4(0b110100, EightDiagrams.XUN, EightDiagrams.GEN, "渐", "☴☶", "风山渐"),
 
     // 坤八  （土
-    DI(0b000000, EightDiagrams.KUN, EightDiagrams.KUN, "地", "☷☷", "坤为地"),
+    KUN1(0b000000, EightDiagrams.KUN, EightDiagrams.KUN, "坤", "☷☷", "坤为地"),
     FU(0b000001, EightDiagrams.KUN, EightDiagrams.ZHEN, "复", "☷☳", "地雷复"),
     LIN(0b000011, EightDiagrams.KUN, EightDiagrams.DUI, "临", "☷☱", "地泽临"),
     TAI(0b000111, EightDiagrams.KUN, EightDiagrams.QIAN, "泰", "☷☰", "地天泰"),
@@ -105,6 +107,69 @@ public enum SixtyFourDiagrams {
     public final String diagram;
     public final String description;
 
+    //获取综卦
+    public SixtyFourDiagrams getZongDiagram()  {
+        return null;
+    }
+    //获取错卦
+    public SixtyFourDiagrams getCuoDiagram()  {
+        return null;
+    }
+    //获取交互卦
+    public SixtyFourDiagrams getJiaoHuDiagram()  {
+        return null;
+    }
 
 
+    public static final int LENGTH = 64;
+
+    public static SixtyFourDiagrams valueOf(EightDiagrams upDiagram, EightDiagrams downDiagram) {
+        for (SixtyFourDiagrams diagram : SixtyFourDiagrams.values()) {
+            if (diagram.upDiagram == upDiagram && diagram.downDiagram == downDiagram) {
+                return diagram;
+            }
+        }
+
+        return null;
+    }
+
+    public static SixtyFourDiagrams valueOf(int code) {
+        for (SixtyFourDiagrams diagram : SixtyFourDiagrams.values()) {
+            if (diagram.code == code) {
+                return diagram;
+            }
+        }
+
+        return null;
+    }
+
+    //方圆图之方图【空间】
+    public final static SixtyFourDiagrams[][] SquareDiagrams = new SixtyFourDiagrams[EightDiagrams.LENGTH][EightDiagrams.LENGTH];
+    static {
+        List<EightDiagrams> fuxi = EightDiagrams.FuxiEightDiagrams;
+        for( int i = EightDiagrams.LENGTH; i > 0; i--) {
+            for (int j = EightDiagrams.LENGTH; j > 0; j--) {
+                SquareDiagrams[i - 1][j - 1] = valueOf(fuxi.get(EightDiagrams.LENGTH - j), fuxi.get(EightDiagrams.LENGTH - i));
+            }
+        }
+    }
+
+    //方圆图之圆图【时间】
+    public final static SixtyFourDiagrams[] CircleDiagrams = new SixtyFourDiagrams[LENGTH];
+    static {
+        int i = 0;
+        for (int left = EightDiagrams.LENGTH; left > 4; left--) {
+            for (int column = EightDiagrams.LENGTH; column > 0; column--) {
+                CircleDiagrams[i] = SquareDiagrams[left - 1][column - 1];
+                i++;
+            }
+        }
+
+        for (int right = 1; right <= 4; right++) {
+            for (int column = 1; column <= EightDiagrams.LENGTH; column++) {
+                CircleDiagrams[i] = SquareDiagrams[right - 1][column - 1];
+                i++;
+            }
+        }
+    }
 }

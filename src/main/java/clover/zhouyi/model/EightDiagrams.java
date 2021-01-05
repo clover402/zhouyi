@@ -2,6 +2,10 @@ package clover.zhouyi.model;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 八卦
  */
@@ -27,6 +31,7 @@ public enum EightDiagrams {
     public final String description;
     public final FiveElements element;
 
+    public final static int LENGTH = 8;
     /**
      * 伏羲八卦，先天八卦
      *            南
@@ -35,8 +40,8 @@ public enum EightDiagrams {
      *       ZHEN(4)  KUN(8)  GEN(7)
      *             北
      */
-    public final static EightDiagrams[] FuxiEightDiagrams = {QIAN, DUI, LI, ZHEN, XUN, KAN, GEN, KUN, null};
-    public final static EightDiagrams[] NatureEightDiagrams = FuxiEightDiagrams;
+    public final static List<EightDiagrams> FuxiEightDiagrams = Collections.unmodifiableList(Arrays.asList(QIAN, DUI, LI, ZHEN, XUN, KAN, GEN, KUN, null));
+    public final static List<EightDiagrams> NatureEightDiagrams = FuxiEightDiagrams;
 
     /**
      * 文王八卦，后天八卦
@@ -46,6 +51,6 @@ public enum EightDiagrams {
      *    GEN(8)  KAN(1)  QIAN(6)
      *          北
      */
-    public final static EightDiagrams[] WenwangEightDiagrams = {KAN, KUN, ZHEN, XUN, null, QIAN, DUI, GEN, LI};
-    public final static EightDiagrams[] NurtureEightDiagrams = WenwangEightDiagrams;
+    public final static List<EightDiagrams> WenwangEightDiagrams = Collections.unmodifiableList(Arrays.asList(KAN, KUN, ZHEN, XUN, null, QIAN, DUI, GEN, LI));
+    public final static List<EightDiagrams> NurtureEightDiagrams = WenwangEightDiagrams;
 }
